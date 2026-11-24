@@ -7,6 +7,15 @@
   <meta name="description" content="تماس با تولیدی مبل بیگی مستر تختشو در مشهد. آدرس کارخانه، شماره واتساپ و فرم درخواست مشاوره.">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:title" content="تماس با ما | مبل بیگی مستر تختشو">
+  <meta property="og:description" content="آدرس کارخانه، شماره واتساپ و درخواست مشاوره مبل تختخوابشو در مشهد.">
+  <meta property="og:image" content="assets/images/logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 
@@ -15,7 +24,7 @@
       <a href="index.html" class="logo">
         <img src="assets/images/logo.jpg" alt="لوگوی مبل بیگی مستر تختشو">
         <div class="logo-text">
-          <span class="brand">Moble.beigi</span>
+          <span class="brand">Mobel.beigi</span>
           <span class="tagline">مستر تختشو</span>
         </div>
       </a>
@@ -23,7 +32,7 @@
       <nav class="nav" id="mainNav">
         <a href="index.html">صفحه اصلی</a>
         <a href="products.html">محصولات</a>
-        <a href="sofa-bed.html">مبل تخت‌خواب‌شو</a>
+        <a href="products.html">مبل تخت‌خواب‌شو</a>
         <a href="about.html">درباره ما</a>
         <a href="contact.html" class="active">تماس با ما</a>
         <a href="https://wa.me/989354381609?text=سلام، از سایت مبل بیگی پیام می‌دم" class="header-cta" target="_blank" rel="noopener">استعلام قیمت</a>
@@ -85,20 +94,20 @@
 
         <div class="contact-form">
           <h3>فرم درخواست مشاوره</h3>
-          <p style="font-size:0.9rem;color:var(--gray);margin-bottom:20px;">این فرم فعلاً نمایشی است. در نسخه نهایی به واتساپ یا ایمیل/CRM متصل می‌شود.</p>
+          <p style="font-size:0.9rem;color:var(--gray);margin-bottom:20px;">پس از پر کردن فرم، پیام شما با مشخصات واردشده در واتساپ آماده میشود.</p>
 
-          <form onsubmit="event.preventDefault(); alert('در نسخه نهایی این فرم به سیستم لید متصل می‌شود. فعلاً از واتساپ استفاده کنید.');">
+          <form id="leadForm">
             <div class="form-group">
               <label>نام و نام خانوادگی</label>
-              <input type="text" placeholder="نام شما" required>
+              <input type="text" name="name" placeholder="نام شما" required>
             </div>
             <div class="form-group">
               <label>شماره تماس</label>
-              <input type="tel" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required>
+              <input type="tel" name="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required>
             </div>
             <div class="form-group">
               <label>موضوع</label>
-              <select>
+              <select name="subject">
                 <option>استعلام قیمت مبل تخت‌خواب‌شو</option>
                 <option>مشاوره مدل و ابعاد</option>
                 <option>سفارش عمده / فروشگاهی</option>
@@ -107,7 +116,7 @@
             </div>
             <div class="form-group">
               <label>پیام شما</label>
-              <textarea placeholder="توضیحات بیشتر..."></textarea>
+              <textarea name="message" placeholder="توضیحات بیشتر..."></textarea>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">ارسال درخواست</button>
           </form>
@@ -133,7 +142,7 @@
           <div class="logo">
             <img src="assets/images/logo.jpg" alt="لوگو" style="height:48px;border-radius:8px;">
             <div class="logo-text">
-              <span class="brand">Moble.beigi</span>
+              <span class="brand">Mobel.beigi</span>
               <span class="tagline" style="color:#aaa;">مستر تختشو</span>
             </div>
           </div>
@@ -151,7 +160,7 @@
         <div>
           <h4>محصولات</h4>
           <ul>
-            <li><a href="sofa-bed.html">مبل تخت‌خواب‌شو</a></li>
+            <li><a href="products.html">مبل تخت‌خواب‌شو</a></li>
             <li><a href="products.html">مبل راحتی</a></li>
           </ul>
         </div>
@@ -174,5 +183,8 @@
       document.getElementById('mainNav').classList.toggle('open');
     });
   </script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
