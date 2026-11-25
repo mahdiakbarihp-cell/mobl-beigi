@@ -8,7 +8,6 @@ moble-beigi-site/
 ├── index.html          صفحه اصلی (طرح ادیتوریال لوکس)
 ├── products.html       کالکشن ۱۵ مدل در ۵ دسته
 ├── product.html        صفحه جزئیات مدل (با ?model=slug)
-├── sofa-bed.html       تغییرمسیر به raili-80
 ├── about.html          درباره ما و سخن امیر بیگی
 ├── contact.html        تماس و فرم درخواست مشاوره
 ├── 404.html            صفحه خطا

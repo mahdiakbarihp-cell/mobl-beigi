@@ -721,3 +721,89 @@ details p { color: var(--muted); font-size: 0.85rem; line-height: 1.8; margin-to
     animation: none;
   }
 }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-size: clamp(15px, calc(1.05vw + 12px), 17px);
+  line-height: 1.75;
+}
+
+.nav a { font-size: 1rem; }
+
+.collection-hero h1 {
+  font-size: clamp(2.7rem, 7vw, 6.2rem);
+  line-height: 1.02;
+}
+
+.kicker,
+.eyebrow,
+.audience-card > span,
+.benefit-no,
+.model-card-no { font-size: 0.86rem; }
+
+.lead,
+.row-tagline,
+.statement-list p,
+.audience-card p,
+.model-card p,
+.text-link,
+.models-note,
+.group-count,
+.all-colors,
+.price-note,
+details p,
+.related-title { font-size: 1rem; }
+
+.row-variants { font-size: 0.95rem; }
+.chip-width { font-size: 0.82rem; }
+summary { font-size: 0.98rem; }
+.benefit-item > span:last-child { font-size: 1rem; }
+
+@media (max-width: 768px) {
+  .collection-hero h1 {
+    font-size: clamp(2.2rem, 10vw, 3.4rem);
+    line-height: 1.1;
+  }
+  .kicker,
+  .eyebrow,
+  .audience-card > span,
+  .benefit-no,
+  .model-card-no { font-size: 0.86rem; }
+  .lead,
+  .row-tagline,
+  .statement-list p,
+  .audience-card p,
+  .model-card p,
+  .text-link,
+  .models-note,
+  .group-count,
+  .all-colors,
+  .price-note,
+  details p { font-size: 1rem; }
+  .row-variants { font-size: 0.95rem; }
+  .chip-width { font-size: 0.84rem; }
+  .row-title {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    line-height: 1.15;
+  }
+  .group-title { font-size: clamp(1.7rem, 6vw, 2.4rem); }
+  .detail-title { font-size: clamp(1.9rem, 7vw, 2.8rem); }
+  .stat .num { font-size: 1.8rem; }
+  .model-card h3,
+  .audience-card h3 { font-size: 1.45rem; }
+  .benefit-item > span:last-child { font-size: 0.95rem; }
+}
+
+@media (max-width: 480px) {
+  .collection-hero h1 { font-size: 2.2rem; }
+  .kicker,
+  .eyebrow,
+  .audience-card > span,
+  .benefit-no,
+  .model-card-no { font-size: 0.82rem; }
+  .chip-width { font-size: 0.8rem; }
+}
