@@ -222,7 +222,7 @@
     colorBox.appendChild(node('p', 'all-colors', 'رنگهای قابل سفارش: ' + data.colors.map(function (c) { return c.name; }).join(' · ')));
 
     var ctaBox = node('div', 'cta-block');
-    ctaBox.appendChild(node('span', 'price-note', 'قیمت پس از مشاوره و انتخاب پارچه اعلام میشود'));
+    ctaBox.appendChild(node('span', 'price-note', 'قیمت روز و تخفیف ویژه روز را در واتس آپ، روبیکا و تلگرام بگیرید.'));
     var cta = node('a', 'cta-button', 'استعلام قیمت در واتساپ');
     cta.target = '_blank';
     cta.rel = 'noopener noreferrer';

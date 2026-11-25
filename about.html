@@ -35,7 +35,7 @@
           <span class="tagline">مستر تختشو</span>
         </div>
       </a>
-      <button class="menu-toggle" id="menuToggle" aria-label="منو">منو</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="منو" aria-controls="mainNav" aria-expanded="false">منو</button>
       <nav class="nav" id="mainNav">
         <a href="index.html">صفحه اصلی</a>
         <a href="products.html">مدلها</a>
@@ -166,11 +166,6 @@
 
   <a href="https://wa.me/989354381609" class="float-whatsapp" target="_blank" rel="noopener noreferrer" title="چت در واتساپ">واتساپ</a>
 
-  <script>
-    document.getElementById('menuToggle')?.addEventListener('click', () => {
-      document.getElementById('mainNav').classList.toggle('open');
-    });
-  </script>
   <script src="assets/js/products.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>

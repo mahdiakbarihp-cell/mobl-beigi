@@ -34,7 +34,7 @@
           <span class="tagline">مستر تختشو</span>
         </div>
       </a>
-      <button class="menu-toggle" id="menuToggle" aria-label="منو">منو</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="منو" aria-controls="mainNav" aria-expanded="false">منو</button>
       <nav class="nav" id="mainNav">
         <a href="index.html" class="active">صفحه اصلی</a>
         <a href="products.html">مدلها</a>
@@ -89,19 +89,19 @@
         <span class="kicker">انتخابی از کالکشن</span>
         <h2 class="section-heading">سه مدل برای سه زندگی</h2>
         <div class="model-cards">
-          <a class="model-card" href="product.html?model=raili-80">
+          <a class="model-card model-card-raili" href="product.html?model=raili-80">
             <span class="model-card-no">۰۱</span>
             <h3>یک نفره مدل ریلی عرض 80</h3>
             <p>برای اتاق کوچک و گوشهٔ آسایش یک نفر</p>
             <span class="text-link">مشاهدهٔ مدل</span>
           </a>
-          <a class="model-card" href="product.html?model=laloski-140">
+          <a class="model-card model-card-laloski" href="product.html?model=laloski-140">
             <span class="model-card-no">۰۹</span>
             <h3>کاناپ صفر دیوار مدل لالوسکی عرض 140</h3>
             <p>پذیرایی که مهمان شبانه هم جا میدهد</p>
             <span class="text-link">مشاهدهٔ مدل</span>
           </a>
-          <a class="model-card" href="product.html?model=prince-l">
+          <a class="model-card model-card-prince" href="product.html?model=prince-l">
             <span class="model-card-no">۱۴</span>
             <h3>مبل ال باکسدار تختخواب شو مدل پرنس عرض 240</h3>
             <p>گوشهٔ نشیمن باغ یا اتاق تلویزیون</p>
@@ -170,9 +170,11 @@
       <div class="container">
         <div class="cta-box">
           <h2>همین امروز تختتان را انتخاب کنید</h2>
-          <p>مدل و اندازهای که مناسب فضایتان است بفرستید تا مشاوره و استعلام قیمت بگیرید.</p>
+          <p>قیمت روز و تخفیف ویژه روز را در واتس آپ، روبیکا و تلگرام بگیرید.</p>
           <div class="hero-actions">
-            <a href="https://wa.me/989354381609?text=سلام، میخوام در مورد مبل تختخوابشو مشاوره بگیرم" class="btn btn-primary" target="_blank" rel="noopener">ارتباط در واتساپ</a>
+            <a href="https://wa.me/989354381609?text=سلام، میخوام در مورد مبل تختخوابشو مشاوره بگیرم" class="btn btn-primary" target="_blank" rel="noopener">ارتباط در واتس آپ</a>
+            <a href="https://t.me/+989354381609" class="text-link" target="_blank" rel="noopener noreferrer">تلگرام</a>
+            <a href="tel:+989354381609" class="text-link">روبیکا / تماس</a>
             <a href="#" data-divar="sofaBed" class="text-link">آگهی دیوار ما</a>
             <a href="#" data-instagram class="text-link">اینستاگرام @moble.beigi</a>
           </div>
@@ -236,10 +238,5 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/seo.js"></script>
-  <script>
-    document.getElementById('menuToggle')?.addEventListener('click', () => {
-      document.getElementById('mainNav').classList.toggle('open');
-    });
-  </script>
 </body>
 </html>

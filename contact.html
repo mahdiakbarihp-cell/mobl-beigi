@@ -35,7 +35,7 @@
           <span class="tagline">مستر تختشو</span>
         </div>
       </a>
-      <button class="menu-toggle" id="menuToggle" aria-label="منو">منو</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="منو" aria-controls="mainNav" aria-expanded="false">منو</button>
       <nav class="nav" id="mainNav">
         <a href="index.html">صفحه اصلی</a>
         <a href="products.html">مدلها</a>
@@ -53,7 +53,7 @@
       <div class="container">
         <span class="kicker">تماس و مشاوره</span>
         <h1>مدل و اندازهای<br>که <em>مناسب فضایتان</em> است</h1>
-        <p class="lead">نام مدل، عرض مورد نظر و رنگ دلخواهتان را بفرستید تا مشاوره بگیرید و قیمت دقیق اعلام شود. تحویل فوری ۱ ساعته در مشهد و ارسال به تمام نقاط کشور.</p>
+        <p class="lead">قیمت روز و تخفیف ویژه روز را در واتس آپ، روبیکا و تلگرام بگیرید. تحویل فوری ۱ ساعته در مشهد و ارسال به تمام نقاط کشور.</p>
       </div>
       <span class="hero-count" aria-hidden="true">۱</span>
     </section>
@@ -83,8 +83,9 @@
             <div class="contact-item">
               <div class="icon">تلفن</div>
               <div>
-                <strong>تلفن و واتساپ</strong><br>
-                <a href="tel:+989354381609">۰۹۳۵۴۳۸۱۶۰۹</a>
+                <strong>تلفن، واتس آپ، روبیکا و تلگرام</strong><br>
+                <a href="tel:+989354381609">۰۹۳۵۴۳۸۱۶۰۹</a><br>
+                <a href="https://wa.me/989354381609?text=سلام، از سایت مبل بیگی پیام میدم" target="_blank" rel="noopener noreferrer">واتس آپ</a> · <a href="https://t.me/+989354381609" target="_blank" rel="noopener noreferrer">تلگرام</a> · روبیکا: ۰۹۳۵۴۳۸۱۶۰۹
               </div>
             </div>
 
@@ -105,7 +106,11 @@
             </div>
 
             <div style="margin-top:24px;">
-              <a href="https://wa.me/989354381609?text=سلام، از صفحه تماس سایت مبل بیگی پیام میدم" class="btn btn-whatsapp" style="width:100%;justify-content:center;" target="_blank" rel="noopener noreferrer">شروع چت در واتساپ</a>
+              <a href="https://wa.me/989354381609?text=سلام، از صفحه تماس سایت مبل بیگی پیام میدم" class="btn btn-whatsapp" style="width:100%;justify-content:center;" target="_blank" rel="noopener noreferrer">شروع چت در واتس آپ</a>
+              <div class="hero-actions" style="margin-top:10px;">
+                <a href="https://t.me/+989354381609" class="btn btn-outline" target="_blank" rel="noopener noreferrer">چت در تلگرام</a>
+                <a href="tel:+989354381609" class="btn btn-outline">روبیکا / تماس</a>
+              </div>
             </div>
           </div>
 
@@ -218,11 +223,6 @@
 
   <a href="https://wa.me/989354381609" class="float-whatsapp" target="_blank" rel="noopener noreferrer" title="چت در واتساپ">واتساپ</a>
 
-  <script>
-    document.getElementById('menuToggle')?.addEventListener('click', () => {
-      document.getElementById('mainNav').classList.toggle('open');
-    });
-  </script>
   <script src="assets/js/products.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>

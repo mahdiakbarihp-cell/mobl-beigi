@@ -30,6 +30,28 @@
     el.textContent = 'استعلام در واتساپ';
   });
 
+  var menuToggle = document.getElementById('menuToggle');
+  var mainNav = document.getElementById('mainNav');
+  if (menuToggle && mainNav) {
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.addEventListener('click', function () {
+      var open = mainNav.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mainNav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        mainNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', function (event) {
+      if (!mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
+        mainNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
   var form = document.getElementById('leadForm');
   if (form) {
     form.addEventListener('submit', function (event) {
