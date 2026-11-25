@@ -1,13 +1,37 @@
 الگوی نامگذاری عکسها:
 
-assets/images/products/<مدل>/<اندازه>/<رنگ>/01.jpg ... 10.jpg
+assets/images/products/<اسلاگ>/<اندازه>/<رنگ>/<اسلاگ>-<اندازه>-<رنگ>-01.jpg ... -15.jpg
 
-مدلها: luna, aria, sepehr, nara, viana, mehrgan
-اندازهها: single, w140, w160, w180
-رنگها: cream, beige, sand, taupe, silver, graphite, black, coffee, chocolate, olive, emerald, teal, navy, wine, rust
+اسلاگها:
+raili-80, raili-90, raili-120, raili-140, raili-160, raili-180,
+laloski-80, laloski-90, laloski-140, laloski-160, dougloo-160,
+king-adari, hidden-dark, prince-l, baksi
 
-مثال: luna/w140/cream/01.jpg
+اندازهها:
+w80, w90, w120, w140, w160, w180, w105x190, w240, w130
 
-هر عکسی که وجود داشته باشد نمایش داده میشود؛ عکسی که وجود نداشته باشد مخفی میشود.
+رنگها:
+cream, beige, sand, taupe, silver, graphite, black, coffee, chocolate,
+olive, emerald, teal, navy, wine, rust
 
-برای هر رنگ که حداقل 01.jpg داشته باشد، دکمهٔ رنگ در گالری ظاهر میشود.
+مثالها:
+raili-80/w80/cream/raili-80-w80-cream-01.jpg
+laloski-140/w140/cream/laloski-140-w140-cream-01.jpg
+baksi/w130/cream/baksi-w130-cream-02.jpg
+
+الگوی عددی قدیمی (01.jpg) هم پشتیبانی میشود، ولی الگوی نامدار بالا برای سئو بهتر است.
+ابعاد پیشنهادی: ۱۲۰۰×۱۲۰۰ مربع، JPG کیفیت ۸۰ تا ۸۵، حجم ۱۰۰ تا ۳۰۰ کیلوبایت.
+نام فارسی دقیق مدل در alt تصویر و اسکیما ثبت میشود.
+
+تمام پوشهها از قبل ساخته شدهاند. هر عکسی که وجود داشته باشد نمایش داده
+میشود؛ عکسی که وجود نداشته باشد مخفی میشود. برای هر رنگ که حداقل عکس شمارهٔ 01
+(نامدار یا عددی) داشته باشد، دکمهٔ رنگ در گالری ظاهر میشود.
+
+حداکثر ۱۵ عکس به ازای هر اندازه و رنگ: شمارهٔ 01 تا 15.
+هر تعداد عکس که بارگذاری کنید همان تعداد نمایش داده میشود و نیازی به
+ویرایش کد نیست.
+
+ویدیوهای معرفی هر مدل در مسیر زیر قرار میگیرند:
+assets/videos/<اسلاگ>/01.mp4 ... 05.mp4
+
+ویدیو بارگذاری نشده در صفحه دیده نمیشود.

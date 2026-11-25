@@ -9,8 +9,38 @@
   function pad(n) { return n < 10 ? '0' + n : String(n); }
   function fa(n) { return String(n).replace(/\d/g, function (d) { return digits[Number(d)]; }); }
 
-  function imageUrl(slug, variant, color, index) {
-    return data.imageBase + '/' + slug + '/' + variant + '/' + color + '/' + pad(index) + '.jpg';
+  function imageUrl(slug, sizeId, color, index, descriptive) {
+    var base = data.imageBase + '/' + slug + '/' + sizeId + '/' + color + '/';
+    var name = descriptive ? slug + '-' + sizeId + '-' + color + '-' + pad(index) : pad(index);
+    return base + name + '.jpg';
+  }
+
+  function imageUrls(slug, sizeId, color, index) {
+    return [imageUrl(slug, sizeId, color, index, true), imageUrl(slug, sizeId, color, index, false)];
+  }
+
+  function videoUrl(slug, index) {
+    return data.videoBase + '/' + slug + '/' + pad(index) + '.mp4';
+  }
+
+  function probeVideo(url) {
+    return new Promise(function (resolve) {
+      var v = document.createElement('video');
+      v.preload = 'metadata';
+      v.muted = true;
+      v.onloadedmetadata = function () { resolve(url); };
+      v.onerror = function () { resolve(null); };
+      v.src = url;
+      v.load();
+    });
+  }
+
+  function videosFor(slug) {
+    var urls = [];
+    for (var i = 1; i <= data.maxVideos; i++) urls.push(videoUrl(slug, i));
+    return Promise.all(urls.map(probeVideo)).then(function (list) {
+      return list.filter(function (url) { return url; });
+    });
   }
 
   function probe(url) {
@@ -22,18 +52,29 @@
     });
   }
 
-  function photosFor(slug, variant, color) {
-    var urls = [];
-    for (var i = 1; i <= data.maxPhotos; i++) urls.push(imageUrl(slug, variant, color, i));
-    return Promise.all(urls.map(probe)).then(function (list) {
+  function probeFirst(urls) {
+    var i = 0;
+    function next() {
+      if (i >= urls.length) return Promise.resolve(null);
+      var url = urls[i++];
+      return probe(url).then(function (found) { return found || next(); });
+    }
+    return next();
+  }
+
+  function photosFor(slug, sizeId, color) {
+    var jobs = [];
+    for (var i = 1; i <= data.maxPhotos; i++) jobs.push(probeFirst(imageUrls(slug, sizeId, color, i)));
+    return Promise.all(jobs).then(function (list) {
       return list.filter(function (url) { return url; });
     });
   }
 
-  function colorsFor(slug, variant) {
+  function colorsFor(slug, sizeId) {
     return Promise.all(data.colors.map(function (color) {
-      return probe(imageUrl(slug, variant, color.id, 1)).then(function (url) {
-        return url ? color : null;
+      return probeFirst(imageUrls(slug, sizeId, color.id, 1)).then(function (url) {
+        if (!url) return null;
+        return { id: color.id, name: color.name, hex: color.hex, url: url };
       });
     })).then(function (list) {
       return list.filter(function (color) { return color; });
@@ -59,46 +100,71 @@
     if (og) og.setAttribute('content', title);
   }
 
+  function categoryName(product) {
+    var cat = data.categories.filter(function (c) { return c.id === product.category; })[0];
+    return cat ? cat.name : '';
+  }
+
   function renderCollection() {
     var root = document.getElementById('collectionList');
     if (!root) return;
 
-    data.products.forEach(function (product, index) {
-      var row = node('article', 'editorial-row');
-      row.setAttribute('data-slug', product.slug);
+    var groups = node('div', 'collection-groups');
 
-      var copy = node('div', 'row-copy');
-      copy.appendChild(node('span', 'eyebrow', product.code + ' / مدل ' + fa(index + 1)));
-      copy.appendChild(node('h2', 'row-title', product.name));
-      copy.appendChild(node('p', 'row-tagline', product.tagline));
-      copy.appendChild(node('p', 'row-variants', 'تک نفره · ۱۴۰ · ۱۶۰ · ۱۸۰ سانتی متر'));
-      var link = node('a', 'text-link', 'مشاهدهٔ مدل');
-      link.href = 'product.html?model=' + product.slug;
-      copy.appendChild(link);
+    data.categories.forEach(function (cat) {
+      var items = data.products.filter(function (p) { return p.category === cat.id; });
+      if (!items.length) return;
 
-      var figure = node('figure', 'row-visual');
-      row.appendChild(node('div', 'row-no', fa(index + 1)));
-      row.appendChild(copy);
-      row.appendChild(figure);
-      root.appendChild(row);
+      var section = node('section', 'collection-group');
+      section.id = 'cat-' + cat.id;
+      var title = node('div', 'group-heading');
+      title.appendChild(node('span', 'kicker', 'دسته'));
+      title.appendChild(node('h2', 'group-title', cat.name));
+      title.appendChild(node('span', 'group-count', fa(items.length) + ' مدل'));
+      section.appendChild(title);
 
-      colorsFor(product.slug, 'single').then(function (colors) {
-        if (!colors.length) {
-          row.classList.add('no-image');
-          figure.hidden = true;
-          return;
-        }
-        var img = document.createElement('img');
-        img.loading = 'lazy';
-        img.alt = 'مبل تختخوابشو مدل ' + product.name;
-        img.addEventListener('error', function () {
-          row.classList.add('no-image');
-          figure.hidden = true;
+      items.forEach(function (product, index) {
+        var row = node('article', 'editorial-row');
+        row.setAttribute('data-slug', product.slug);
+
+        var copy = node('div', 'row-copy');
+        copy.appendChild(node('span', 'eyebrow', product.code + ' / ' + cat.name));
+        copy.appendChild(node('h2', 'row-title', product.name));
+        copy.appendChild(node('p', 'row-tagline', product.tagline));
+        copy.appendChild(node('p', 'row-variants', product.sizes.map(function (s) { return s.label; }).join(' · ')));
+        var link = node('a', 'text-link', 'مشاهدهٔ مدل');
+        link.href = 'product.html?model=' + product.slug;
+        copy.appendChild(link);
+
+        var figure = node('figure', 'row-visual');
+        row.appendChild(node('div', 'row-no', fa(index + 1)));
+        row.appendChild(copy);
+        row.appendChild(figure);
+        section.appendChild(row);
+
+        colorsFor(product.slug, product.sizes[0].id).then(function (colors) {
+          if (!colors.length) {
+            row.classList.add('no-image');
+            figure.hidden = true;
+            return;
+          }
+          var img = document.createElement('img');
+          img.loading = 'lazy';
+          img.alt = product.name + '، ' + cat.name + '، ' + product.sizes[0].label + '، رنگ ' + colors[0].name;
+          img.title = img.alt;
+          img.addEventListener('error', function () {
+            row.classList.add('no-image');
+            figure.hidden = true;
+          });
+          img.src = colors[0].url;
+          figure.appendChild(img);
         });
-        img.src = imageUrl(product.slug, 'single', colors[0].id, 1);
-        figure.appendChild(img);
       });
+
+      groups.appendChild(section);
     });
+
+    root.appendChild(groups);
   }
 
   function renderDetail() {
@@ -108,15 +174,15 @@
     var params = new URLSearchParams(window.location.search);
     var slug = params.get('model');
     var product = data.products.filter(function (p) { return p.slug === slug; })[0] || data.products[0];
-    var state = { variant: 'single', color: null };
+    var state = { size: product.sizes[0].id, color: null };
 
     setMeta(product.name + ' | مبل تختخوابشو | مبل بیگی مستر تختشو', product.description);
 
     var crumb = node('nav', 'breadcrumb');
     var home = node('a', '', 'صفحه اصلی');
     home.href = 'index.html';
-    var cat = node('a', '', 'محصولات');
-    cat.href = 'products.html';
+    var cat = node('a', '', categoryName(product));
+    cat.href = 'products.html#cat-' + product.category;
     crumb.appendChild(home);
     crumb.appendChild(node('span', '', '/'));
     crumb.appendChild(cat);
@@ -124,7 +190,7 @@
     crumb.appendChild(node('span', '', product.name));
 
     var intro = node('div', 'detail-intro');
-    intro.appendChild(node('span', 'eyebrow', product.code + ' — کالکشن مبل تختخوابشو'));
+    intro.appendChild(node('span', 'eyebrow', product.code + ' — ' + categoryName(product)));
     intro.appendChild(node('h1', 'detail-title', product.name));
     intro.appendChild(node('p', 'detail-tagline', product.tagline));
     intro.appendChild(node('p', 'detail-desc', product.description));
@@ -136,18 +202,18 @@
     grid.appendChild(gallery);
     grid.appendChild(panel);
 
-    var variantsBox = node('div', 'option-block');
-    variantsBox.appendChild(node('h3', 'option-title', 'انتخاب اندازه'));
-    var variantList = node('div', 'variant-list');
-    data.variants.forEach(function (v) {
+    var sizesBox = node('div', 'option-block');
+    sizesBox.appendChild(node('h3', 'option-title', 'انتخاب عرض'));
+    var sizeList = node('div', 'variant-list');
+    product.sizes.forEach(function (s) {
       var b = node('button', 'variant-chip');
       b.type = 'button';
-      b.setAttribute('data-variant', v.id);
-      b.appendChild(node('span', 'chip-label', v.label));
-      b.appendChild(node('span', 'chip-width', v.width + ' سانتی متر'));
-      variantList.appendChild(b);
+      b.setAttribute('data-variant', s.id);
+      b.appendChild(node('span', 'chip-label', s.label));
+      b.appendChild(node('span', 'chip-width', s.width));
+      sizeList.appendChild(b);
     });
-    variantsBox.appendChild(variantList);
+    sizesBox.appendChild(sizeList);
 
     var colorBox = node('div', 'option-block');
     colorBox.appendChild(node('h3', 'option-title', 'رنگ'));
@@ -181,20 +247,45 @@
       faqBox.appendChild(d);
     });
 
-    panel.appendChild(variantsBox);
+    panel.appendChild(sizesBox);
     panel.appendChild(colorBox);
     panel.appendChild(ctaBox);
     panel.appendChild(specsBox);
     panel.appendChild(faqBox);
 
+    videosFor(product.slug).then(function (videos) {
+      if (!videos.length) return;
+      var box = node('div', 'option-block video-block');
+      box.appendChild(node('h3', 'option-title', 'ویدیو معرفی'));
+      var list = node('div', 'video-list');
+      videos.forEach(function (url, i) {
+        var v = document.createElement('video');
+        v.controls = true;
+        v.preload = 'none';
+        v.playsInline = true;
+        v.src = url;
+        v.setAttribute('aria-label', 'ویدیو ' + fa(i + 1) + ' از مدل ' + product.name);
+        list.appendChild(v);
+      });
+      box.appendChild(list);
+      panel.insertBefore(box, ctaBox);
+    });
+
     var related = node('section', 'related');
-    related.appendChild(node('h3', 'related-title', 'مدلهای دیگر'));
+    related.appendChild(node('h3', 'related-title', 'مدلهای همین دسته'));
     var relatedList = node('div', 'related-list');
-    data.products.filter(function (p) { return p.slug !== product.slug; }).forEach(function (p) {
+    data.products.filter(function (p) { return p.slug !== product.slug && p.category === product.category; }).forEach(function (p) {
       var a = node('a', 'related-item', p.name);
       a.href = 'product.html?model=' + p.slug;
       relatedList.appendChild(a);
     });
+    if (!relatedList.children.length) {
+      data.products.filter(function (p) { return p.slug !== product.slug; }).slice(0, 4).forEach(function (p) {
+        var a = node('a', 'related-item', p.name);
+        a.href = 'product.html?model=' + p.slug;
+        relatedList.appendChild(a);
+      });
+    }
     related.appendChild(relatedList);
 
     root.appendChild(crumb);
@@ -203,9 +294,9 @@
     root.appendChild(related);
 
     function updateCta() {
-      var variant = data.variants.filter(function (v) { return v.id === state.variant; })[0];
+      var size = product.sizes.filter(function (s) { return s.id === state.size; })[0];
       var color = state.color || { name: 'انتخاب نشده' };
-      cta.href = wa('سلام، میخوام قیمت مبل تختخوابشو مدل ' + product.name + ' (' + product.code + ') اندازه ' + variant.label + ' با رنگ ' + color.name + ' رو بدونم.');
+      cta.href = wa('سلام، میخوام قیمت مبل تختخوابشو مدل ' + product.name + ' (' + product.code + ') اندازه ' + size.label + ' با رنگ ' + color.name + ' رو بدونم.');
     }
 
     function showPhotos(photos) {
@@ -215,9 +306,12 @@
         return;
       }
       gallery.hidden = false;
+      var sizeLabel = product.sizes.filter(function (s) { return s.id === state.size; })[0].label;
+      var colorLabel = (state.color && state.color.name) || 'انتخاب نشده';
       var main = document.createElement('img');
       main.className = 'gallery-main';
-      main.alt = 'مبل تختخوابشو مدل ' + product.name;
+      main.alt = product.name + '، ' + categoryName(product) + '، ' + sizeLabel + '، رنگ ' + colorLabel;
+      main.title = main.alt;
       main.src = photos[0];
       gallery.appendChild(main);
       if (photos.length > 1) {
@@ -225,7 +319,8 @@
         photos.forEach(function (url, i) {
           var thumb = document.createElement('img');
           thumb.src = url;
-          thumb.alt = 'نمای ' + fa(i + 1) + ' از مدل ' + product.name;
+          thumb.alt = 'نمای ' + fa(i + 1) + ' از ' + product.name + '، ' + sizeLabel + '، رنگ ' + colorLabel;
+          thumb.title = thumb.alt;
           thumb.className = i === 0 ? 'active' : '';
           thumb.addEventListener('click', function () {
             main.src = url;
@@ -245,18 +340,18 @@
       });
       updateCta();
       showPhotos([]);
-      photosFor(product.slug, state.variant, color.id).then(showPhotos);
+      photosFor(product.slug, state.size, color.id).then(showPhotos);
     }
 
-    function loadVariant(variantId) {
-      state.variant = variantId;
-      variantList.querySelectorAll('button').forEach(function (b) {
-        b.classList.toggle('active', b.getAttribute('data-variant') === variantId);
+    function loadSize(sizeId) {
+      state.size = sizeId;
+      sizeList.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-variant') === sizeId);
       });
       colorList.innerHTML = '';
       gallery.hidden = true;
       updateCta();
-      colorsFor(product.slug, variantId).then(function (colors) {
+      colorsFor(product.slug, sizeId).then(function (colors) {
         if (!colors.length) return;
         colors.forEach(function (color) {
           var b = node('button', 'color-dot');
@@ -272,11 +367,11 @@
       });
     }
 
-    variantList.querySelectorAll('button').forEach(function (b) {
-      b.addEventListener('click', function () { loadVariant(b.getAttribute('data-variant')); });
+    sizeList.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () { loadSize(b.getAttribute('data-variant')); });
     });
 
-    loadVariant('single');
+    loadSize(product.sizes[0].id);
   }
 
   renderCollection();

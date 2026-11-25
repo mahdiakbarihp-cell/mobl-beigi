@@ -1,2 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /README.txt
+Disallow: /assets/images/products/README.txt
+
+User-agent: Googlebot
+Allow: /
+Disallow: /README.txt
+Disallow: /assets/images/products/README.txt
+
+Sitemap: /sitemap.xml

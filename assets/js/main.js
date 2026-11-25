@@ -7,6 +7,13 @@
     return 'https://wa.me/' + config.whatsapp + '?text=' + encodeURIComponent(text);
   }
 
+  document.querySelectorAll('[data-instagram]').forEach(function (el) {
+    if (config.instagram) {
+      el.href = config.instagram;
+      el.rel = 'noopener noreferrer';
+    }
+  });
+
   document.querySelectorAll('[data-divar]').forEach(function (el) {
     var key = el.getAttribute('data-divar');
     var links = config.divarLinks || {};
